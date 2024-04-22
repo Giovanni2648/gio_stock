@@ -1,0 +1,31 @@
+<div id="container">
+	 <a href="" hx-get="{% url 'stock:remover' %}" hx-target="#container" hx-swap="outterHTML"><i class="fa-solid fa-close"></i></a>
+	{% if forms.errors %}
+        {% for form in forms.errors.items %}
+            {% for field, error in form.errors.items %}
+	            <p class="alert bg-danger text-light">{{field}} - {{error.as_text}}</p>
+	        {% endfor %}
+        {% endfor %}
+    {% endif %}
+    {% if forms.non_form_errors %}
+    	{{forms.non_form_errors}}
+    {% endif %}
+	<form action="" hx-post="{% url 'stock:modify_all_category_products' %}" enctype="multipart/form-data">
+		{{forms.management_form}}
+		{% csrf_token %}
+			{% for form in forms %}
+			{% if forloop.first %}
+				<p>All Products In:</p>
+			{% endif %}
+			
+			{% if forloop.last %}
+				<p>Pass To:</p>
+			{% endif %}
+		
+			{% for field in form %}
+				{{field}}
+			{% endfor %}
+		{% endfor %}
+		<button type="submit">Submit</button>
+	</form>
+</div>

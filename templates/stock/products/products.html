@@ -1,0 +1,21 @@
+{% extends 'stock/base_template.html' %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-8 mt-3" id="main-container">
+				<form action="" hx-post="{% url 'stock:search_products' %}">
+					<input type="search" class="form-control" name="search_product">
+					<button type="submit">Submit</button>
+				</form>
+				{% include 'stock/products/table.html/' %}
+			</div>
+			<div class="col-4" id="sec-container">
+				{% include 'stock/products/utilities/product_nav.html' %}
+				<div id="htmx-container">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

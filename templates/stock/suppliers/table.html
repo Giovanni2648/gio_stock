@@ -1,0 +1,45 @@
+<table class="table table-responsive table-sm table-bordered">
+	<thead>
+		<tr>
+			<th>Image</th>
+			<th><a href="" hx-get="{% url 'stock:suppliers_filter' 0 order 'suppliers'%}">Name</a></th>
+			<th>Description</th>
+			<th><a href="" hx-get="{% url 'stock:suppliers_filter' 1 order 'suppliers'%}">Category</a></th>
+			<th><a href="" hx-get="{% url 'stock:suppliers_filter' 2 order 'suppliers'%}">Review</a></th>
+			<th></th>
+			<th></th>
+			<th><a href="" hx-get="{% url 'stock:delete_suppliers' %}" hx-target="#main-container" hx-reswap="innerHTML"><i class="fa-solid fa-square-check"></i></a></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for supplier in suppliers %}
+			<tr>
+				<td><img class="img-thumbnail rounded" src="../media/{{supplier.image.name}}" alt="image of the supplier" style="height: 100px; width: 100px; object-fit: cover;"></td>
+				<td>{{supplier.name}}</td>
+				<td>{{supplier.description}}</td>
+				<td>{{supplier.category}}</td>
+				<td>{{supplier.review}}</td>
+				<td><a href="{% url 'stock:supplier' supplier.id %}"><i class="fa-solid fa-eye"></i></a></td>
+				<td><a href="" hx-get="{% url 'stock:update_supplier' supplier.id %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-pencil"></i></a></td>
+				<td><a href="" hx-post="{% url 'stock:delete_supplier' supplier.id %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-trash"></i></a></td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<div class="pagination">
+<span class="step-links">
+    {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+</span>
+</div>

@@ -1,0 +1,37 @@
+<form action="" hx-post="{% url 'stock:delete_products' %}" enctype="multipart/form-data">
+	{% csrf_token %}
+	<a href="" hx-get="{% url 'stock:products' %}" hx-target="body" hx-swapp="innerHTML"><i class="fa-solid fa-left-long bg-dark text-light p-2" rounded></i></a>
+	<table class="table table-responsive table-inverse">
+		<thead>
+			<tr>
+				<th>Image</th>
+				<th><a href="" hx-get="{% url 'stock:filters' 0 order 'delete_products' %}">Name</a></th>
+				<th><a href="" hx-get="{% url 'stock:filters' 1 order 'delete_products' %}">Brand</a></th>
+				<th><a href="" hx-get="{% url 'stock:filters' 2 order 'delete_products' %}">Price</a></th>
+				<th><a href="" hx-get="{% url 'stock:filters' 3 order 'delete_products' %}">Cost</a></th>
+				<th><a href="" hx-get="{% url 'stock:filters' 4 order 'delete_products' %}">Quantity</a></th>
+				<th>Total Price</th>
+				<th>Total Cost</th>
+				<th><a href="" hx-get="{% url 'stock:filters' 5 order 'delete_products' %}">Category</a></th>
+				<th></th>
+				<th><button type="submit"><i class="fa-solid fa-trash"></i></button></th>
+			</tr>
+		</thead>
+		<tbody>
+				{% for product in products %}
+					<tr>
+						<td><img class="img-thumbnail rounded" src="../media/{{product.image.name}}" alt="Image Product" style="height: 100px;"></td>
+						<td>{{product.name}}</td>
+						<td>{{product.price}}</td>
+						<td>{{product.cost}}</td>
+						<td>{{product.quantity}}</td>
+						<td>{{product.total_price}}</td>
+						<td>{{product.total_cost}}</td>
+						<td>{{product.category}}</td>
+						<td><a href="" hx-post="{% url 'stock:update_product' product.id %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-pencil"></i></a></td>
+						<td><input type="checkbox" name="products[]" value="{{product.id}}"></a></td>
+					</tr>
+				{% endfor %}
+		</tbody>
+	</table>
+</form>

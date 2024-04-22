@@ -1,0 +1,29 @@
+{% extends 'stock/base_template.html' %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-8 mt-2" id="main-container">
+				<div class="container-fluid p-0 m-0">
+					<div class="row align-items-center">
+						<div class="col-2">
+							<img class="float-end" src="../../media/{{supplier.image}}/" style="height: 100px; width: 100px; object-fit: cover;">
+						</div>
+						<div class="col-8 text-left">
+							<h2 style="display: inline;">{{supplier.name}}</h2>
+						</div>
+					</div>
+				</div>
+				<br>
+				<br>
+				{% include 'stock/suppliers/supplier/table.html/' %}
+			</div>
+			<div class="col-4" id="sec-container">
+				{% include 'stock/suppliers/supplier/utilities/supplier_nav.html' %}
+				<div id="htmx-container">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

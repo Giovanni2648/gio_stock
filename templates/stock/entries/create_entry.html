@@ -1,0 +1,65 @@
+{% extends 'stock/base_template.html' %}
+{% block content %}
+<div id="create-entry">
+    {% if form.errors %}
+        {% for field, error in form.errors.items %}
+            <p class="alert bg-danger text-light">{{field}} - {{error.as_text}}</p>
+        {% endfor %}
+    {% endif %}
+    <form class="row g-3" hx-post="{% url 'stock:create_entry' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="fieldWrapper">
+                <div class="col-auto">
+                    {{ field.label_tag }} {{ field }}
+                </div>
+            </div>
+        {% endfor %}
+        <table class="table table-inverse">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for product in page_obj %}
+                        <tr>
+                            <td><img src="../media/{{product.image}}/" alt="" style="height: 100px; object-fit: cover;"></td>
+                            <td>{{product.name}}</td>
+                            <td>{{product.quantity}}</td>
+                            <td>{{product.price}}</td>
+                            <td>{{product.category}}</td>
+                            <td>{{product.total}}</td>
+                            <td><input type="checkbox" name="products[]" value="{{product.id}}"></td>
+                            <td><input type="number" name="quantity[]"></td>
+                        </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+<table class="table table-responsive table-inverse">
+	<thead>
+		<tr>
+			<th><a class="h5 bg-dark text-light rounded p-1" href="" hx-get="{% url 'stock:create_category' %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-plus"></i></a></th>
+			<th>Name</th>
+			<th></th>
+			<th><a href="" hx-get="{% url 'stock:delete_categories' %}" hx-target="#main-container" hx-reswap="innerHTML"><i class="fa-solid fa-square-check"></i></a></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for category in categories %}
+			<tr>
+				<td></td>
+				<td>{{category.name}}</td>
+				<td><a href="" hx-get="{% url 'stock:update_category' category.id %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-pencil"></i></a></td>
+				<td><a href="" hx-post="{% url 'stock:delete_category' category.id %}" hx-target="#error-container" hx-swap="innerHTML"><i class="fa-solid fa-trash"></i></a></td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<div class="pagination">
+<span class="step-links">
+    {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+</span>
+</div>

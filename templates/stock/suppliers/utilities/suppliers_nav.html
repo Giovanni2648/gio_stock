@@ -1,0 +1,13 @@
+<ul class="nav"nav-tabs>
+				    <li class="nav-item">
+				        <a class="nav-link text-dark rounded p-1" href="" hx-get="{% url 'stock:create_supplier' %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-plus"></i> Create Supplier</a>
+				    </li>
+				    <li class="nav-item dropdown">
+					    <a class="nav-link text-dark dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Assign on Mass</a>
+					    <ul class="dropdown-menu">
+					        <li><a class="dropdown-item" href="" hx-get="{% url 'stock:modify_all_category_suppliers' %}" hx-target="#htmx-container" hx-swap="innerHTML">Modify all Category Suppliers</a></li>
+					        <li><a class="dropdown-item" href="" hx-get="{% url 'stock:modify_some_category_suppliers' %}" hx-target="body" hx-swap="innerHTML">Modify Some Category Suppliers</a></li>
+					        <li><hr class="dropdown-divider"></li>
+					    </ul>
+				    </li>
+				</ul>

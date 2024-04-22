@@ -1,0 +1,22 @@
+<a class="h4 bg-dark text-light rounded p-2 mt-3" href="" hx-get="{% url 'stock:create_category' %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-plus"></i> Create category</a>
+<form action="" hx-post="{% url 'stock:delete_categories' %}" enctype="multipart/form-data">
+	{% csrf_token %}
+	<table class="table table-responsive table-inverse">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th></th>
+				<th><button type="submit"><i class="fa-solid fa-trash"></i></button></th>
+			</tr>
+		</thead>
+		<tbody>
+				{% for category in categories %}
+					<tr>
+						<td>{{category.name}}</td>
+						<td><a href="" hx-post="{% url 'stock:update_category' category.id %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-pencil"></i></a></td>
+						<td><input type="checkbox" name="categories[]" value="{{category.id}}"></a></td>
+					</tr>
+				{% endfor %}
+		</tbody>
+	</table>
+</form>

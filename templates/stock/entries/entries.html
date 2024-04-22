@@ -1,0 +1,41 @@
+{% extends 'stock/base_template.html' %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-8 mt-3" id="main-container">
+				{% include 'stock/entries/table.html/' %}
+				    <table class="table table-inverse">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Products</th>
+                <th>Supplier</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>18/03/2024</td>
+                <td>
+                    <ul>
+                        <li>product 1 - 100</li>
+                        <li>product 2 - 1.000</li>
+                        <li>product 3 - 10.000</li>
+                    </ul>
+                </td>
+                <td>Gio xd</td>
+                <td>1.000.000</td>
+            </tr>
+        </tbody>
+    </table>
+			</div>
+			<div class="col-4" id="sec-container">
+				{% include 'stock/entries/utilities/entries_nav.html' %}
+				<div id="htmx-container">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

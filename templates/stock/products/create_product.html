@@ -1,0 +1,19 @@
+<div id="container">
+    <a href="" hx-get="" hx-target="#container" hx-swap="delete"><i class="fa-solid fa-close"></i></a>
+    {% if form.errors %}
+        {% for field, error in form.errors.items %}
+            <p class="alert bg-danger text-light">{{field}} - {{error.as_text}}</p>
+        {% endfor %}
+    {% endif %}
+    <form class="row g-3" hx-post="{% url 'stock:create_product' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="fieldWrapper">
+                <div class="col-auto">
+                    {{ field.label_tag }} {{ field }}
+                </div>
+            </div>
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
+</div>

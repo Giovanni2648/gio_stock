@@ -1,0 +1,73 @@
+{% extends 'stock/base_template.html' %}
+
+{% block content %}
+	<form action="" hx-post="{% url 'stock:modify_some_category_suppliers' %}" enctype="multipart/form-data">
+	{% csrf_token %}
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-8 mt-3" id="main-container">
+					<a href="" hx-get="{% url 'stock:suppliers' %}" hx-target="body" hx-swapp="innerHTML"><i class="fa-solid fa-left-long bg-dark text-light p-2" rounded></i></a>
+						<table class="table table-responsive table-inverse">
+							<thead>
+								<tr>
+									<th>Image</th>
+									<th>Name</th>
+									<th>Quantity</th>
+									<th>Price</th>
+									<th>Category</th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+									{% for supplier in suppliers %}
+										<tr>
+											<td>{{supplier.image}}</td>
+											<td>{{supplier.name}}</td>
+											<td>{{supplier.quantity}}</td>
+											<td>{{supplier.price}}</td>
+											<td>{{supplier.category}}</td>
+											<td><a href="" hx-post="{% url 'stock:update_supplier' supplier.id %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-pencil"></i></a></td>
+											<td><input type="checkbox" name="suppliers[]" value="{{supplier.id}}"></a></td>
+										</tr>
+									{% endfor %}
+							</tbody>
+						</table>
+				</div>
+				<div class="col-4" id="container">
+					{% include 'stock/suppliers/utilities/suppliers_nav.html' %}
+
+					<div id="htmx-container">
+						
+					</div>
+
+					<div>
+						{% if forms.errors %}
+					        {% for form in forms.errors.items %}
+					            {% for field, error in form.errors.items %}
+						            <p class="alert bg-danger text-light">{{field}} - {{error.as_text}}</p>
+						        {% endfor %}
+					        {% endfor %}
+					    {% endif %}
+					    {% if forms.non_form_errors %}
+					    	{{forms.non_form_errors}}
+					    {% endif %}
+
+						{{forms.management_form}}
+						{% csrf_token %}
+							{% for form in forms %}
+							{% if forloop.first %}
+								<p>All suppliers Pass To:</p>
+							{% endif %}
+						
+							{% for field in form %}
+								{{field}}
+							{% endfor %}
+						{% endfor %}
+							<button type="submit">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+{% endblock %}
