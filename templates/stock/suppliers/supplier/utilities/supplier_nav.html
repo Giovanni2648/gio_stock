@@ -1,7 +1,12 @@
 <ul class="nav"nav-tabs>
 	<li class="nav-item">
-		<a class="nav-link text-dark rounded p-1" href="" hx-get="{# url 'stock:add_products_supplier' pk #}" hx-target="body" hx-swap="innerHTML"><i class="fa-solid fa-plus"></i>Add Products</a>
+		<a class="nav-link text-dark rounded p-1" href="" hx-get="{% url 'stock:add_products_supplier' pk %}" hx-target="body" hx-swap="innerHTML"><i class="fa-solid fa-plus"></i>Add Products</a>
 	</li>
+
+	<li class="nav-item">
+		<a class="nav-link text-dark rounded p-1" href="" hx-get="{% url 'stock:create_product_supplier' pk %}" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-plus"></i>Create Products</a>
+	</li>
+	
 	<li class="nav-item">
 		<a class="nav-link text-dark rounded p-1" href="" hx-get="" hx-target="#htmx-container" hx-swap="innerHTML"><i class="fa-solid fa-plus"></i>Historial of Entries</a>
 	</li> 

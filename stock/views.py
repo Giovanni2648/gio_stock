@@ -1,8 +1,8 @@
 from django_htmx.http import HttpResponseClientRefresh, HttpResponseLocation, retarget
-from django.db.models.functions import Coalesce
 from django.core.paginator import Paginator
 from stock.forms import BaseCategoryFormSet
 from django.forms import formset_factory
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.shortcuts import render
 from .models import *
@@ -16,7 +16,12 @@ def index(request):
 
 def products(request):
 	order = 'asc'
-	products = Products.objects.all()
+	value = request.POST.get('search')
+	print(value)
+	if value:
+		products = Products.objects.filter(name__icontains=value)
+	else:
+		products = Products.objects.all()
 	paginator = Paginator(products, 5)
 	page_number = request.GET.get("page")
 	page_obj = paginator.get_page(page_number)
@@ -186,7 +191,7 @@ def increase_price(request, category):
 		return render(request, 'stock/products/utilities/increase_price.html', context)
 	return HttpResponse()
 
-def products_filter(request, index, order , page):
+def products_filter(request, index, order , page, id):
 	index = int(index)
 	if index <= 5 and index >= 0:
 		filter_dict = {
@@ -197,6 +202,7 @@ def products_filter(request, index, order , page):
 		4 : 'quantity',
 		5 : 'category',
 		}
+		supplier = None
 		filter_value = filter_dict[index]
 		if order == 'asc':
 			filter_value = f"-{filter_value}"
@@ -204,7 +210,12 @@ def products_filter(request, index, order , page):
 		else:
 			filter_value = filter_value.removeprefix('-')
 			order = 'asc'
-		products = Products.objects.order_by(filter_value)
+		if page == "supplier":
+			supplier = Suppliers.objects.get(id=int(id))
+			print(id, supplier)
+			products = supplier.products.order_by(filter_value)
+		else:
+			products = Products.objects.order_by(filter_value)
 		paginator = Paginator(products, 5)
 		page_number = request.GET.get("page")
 		page_obj = paginator.get_page(page_number)
@@ -226,16 +237,14 @@ def products_filter(request, index, order , page):
 			response = render(request, 'stock/products/delete_products.html', context)
 			retarget(response, '#main-container')
 			return response
-
-def search_products(request):
-	value = request.POST['search_product']
-	products = Products.objects.filter(name__icontains=value)
-	page_obj = products
-	context = {
-		'page_obj' : page_obj,
-		'order' : 'asc'
-	}
-	return render(request, 'stock/products/products.html') 
+		if page == "supplier":
+			context = {
+				'order' : order,
+				'supplier' : supplier,
+				'products' : products,
+				'page_obj' : page_obj,	
+			}
+			return render(request, 'stock/suppliers/supplier/table.html', context)
 
 #CRUD Categories
 
@@ -305,7 +314,11 @@ def delete_categories(request):
 
 def suppliers(request):
 	order = "asc"
-	supplier = Suppliers.objects.all()
+	value = request.POST.get('search')
+	if value:
+		supplier = Suppliers.objects.filter(name__icontains=value)
+	else:
+		supplier = Suppliers.objects.all()
 	paginator = Paginator(supplier, 10)
 	page_number = request.GET.get("page")
 	page_obj = paginator.get_page(page_number)
@@ -472,13 +485,22 @@ def suppliers_filter(request, index, order, page):
 
 def supplier_dashboard(request, pk):
 	pk = int(pk)
+	order = "asc"
 	supplier = Suppliers.objects.get(id=pk)
-	products = supplier.products.all()
+	value = request.POST.get('search')
+	if value:
+		products = supplier.products.filter(name__icontains=value)
+	else:
+		products = supplier.products.all()
+	paginator = Paginator(products, 3)
+	page_number = request.GET.get("page")
+	page_obj = paginator.get_page(page_number)
 	print(supplier.id, type(supplier.id))
 	context = {
 		'supplier' : supplier,
-		'products' : products,
+		'page_obj' : page_obj,
 		'pk' : pk,
+		'order' : order,
 	}
 	return render(request, 'stock/suppliers/supplier/supplier_dashboard.html', context)
 
@@ -489,17 +511,17 @@ def create_product_supplier(request, pk):
 		product_form = ProductForm(request.POST, request.FILES)
 		if product_form.is_valid():
 			category = Categories.objects.get(id=request.POST['category'])
-			product_form.save(commit=False)
-			products.image = request.FILES['image']
-			products.name = request.POST['name']
-			products.quantity = request.POST['quantity']
-			products.price = request.POST['price']
-			products.total = int(request.POST['price']) * int(request.POST['quantity'])
-			products.category = category
-			products.save()
-			response = HttpResponseLocation(f"{pk}")
-			retarget(response, 'body')
-			return response
+			supplier = Suppliers.objects.get(id=pk)
+			product = supplier.products.create(
+				image = request.FILES['image'],
+				name = request.POST['name'],
+				quantity = request.POST['quantity'],
+				price = request.POST['price'],
+				cost = request.POST['cost'],
+				total_price = int(request.POST['price']) * int(request.POST['quantity']),
+				total_cost = int(request.POST['cost']) * int(request.POST['quantity']), 
+				category = category)
+			return HttpResponseClientRefresh()
 	context = {
 		'form' : product_form,
 		'pk' : pk,
@@ -514,6 +536,7 @@ def add_products_supplier(request, pk):
 		if products:
 			for product in products:
 				supplier.products.add(product)
+			return HttpResponseClientRefresh()
 		else:
 			print("form invalid")
 
@@ -526,11 +549,12 @@ def add_products_supplier(request, pk):
 		'pk' : pk
 	}
 	return render(request, "stock/suppliers/supplier/utilities/add_products.html", context)
-	#aqui tendria que añadir la vista a un tempalte con checkbox que tenga posibilidad de salir y que tire error si no tiene productos en el form
 
-def delete_product_supplier(request, pk_product, pk_supplier):
-	supplier = Suppliers.objects.get(id=pk_supplier)
-	product = supplier.products.remove(pk_product)
+def delete_product_supplier(request, pk, pk_product):
+	print(pk, pk_product)
+	supplier = Suppliers.objects.get(id=pk)
+	product = Products.objects.get(id=pk_product)
+	remover = supplier.products.remove(product)
 	return HttpResponseClientRefresh()
 
 def delete_products_supplier(request, pk):

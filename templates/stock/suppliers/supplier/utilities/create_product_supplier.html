@@ -1,5 +1,5 @@
 <div id="create-product-supplier">
-    <a href="" hx-get="{% url 'stock:remover' %}" hx-target="#create-product-supplier" hx-swap="outterHTML"><i class="fa-solid fa-close"></i></a>
+    <a href="" hx-get="" hx-target="#create-product-supplier" hx-swap="delete"><i class="fa-solid fa-close"></i></a>
     {% if form.errors %}
         {% for field, error in form.errors.items %}
             <p class="alert bg-danger text-light">{{field}} - {{error.as_text}}</p>

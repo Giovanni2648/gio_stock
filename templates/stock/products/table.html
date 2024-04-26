@@ -2,14 +2,14 @@
 	<thead>
 		<tr>
 			<th>Image</th>
-			<th><a href="" hx-get="{% url 'stock:products_filter' 0 order 'products' %}" tabindex=-1 >Name</a></th>
-			<th><a href="" hx-get="{% url 'stock:products_filter' 1 order 'products' %}" tabindex=-1 >Brand</a></th>
-			<th><a href="" hx-get="{% url 'stock:products_filter' 2 order 'products' %}" tabindex=-1 >Price</a></th>
-			<th><a href="" hx-get="{% url 'stock:products_filter' 3 order 'products' %}" tabindex=-1 >Cost</a></th>
-			<th><a href="" hx-get="{% url 'stock:products_filter' 4 order 'products' %}" tabindex=-1 >Quantity</a></th>
+			<th><a href="" hx-get="{% url 'stock:products_filter' 0 order 'products' None %}" tabindex=-1 >Name</a></th>
+			<th><a href="" hx-get="{% url 'stock:products_filter' 1 order 'products' None %}" tabindex=-1 >Brand</a></th>
+			<th><a href="" hx-get="{% url 'stock:products_filter' 2 order 'products' None %}" tabindex=-1 >Price</a></th>
+			<th><a href="" hx-get="{% url 'stock:products_filter' 3 order 'products' None %}" tabindex=-1 >Cost</a></th>
+			<th><a href="" hx-get="{% url 'stock:products_filter' 4 order 'products' None %}" tabindex=-1 >Quantity</a></th>
 			<th>Total Price</th>
 			<th>Total Cost</th>
-			<th><a href="" hx-get="{% url 'stock:products_filter' 5 order 'products' %}" tabindex=-1 >Category</a></th>
+			<th><a href="" hx-get="{% url 'stock:products_filter' 5 order 'products' None %}" tabindex=-1 >Category</a></th>
 			<th></th>
 			<th><a href="" hx-get="{% url 'stock:delete_products' %}" hx-target="#main-container" hx-reswap="innerHTML"><i class="fa-solid fa-square-check"></i></a></th>
 		</tr>

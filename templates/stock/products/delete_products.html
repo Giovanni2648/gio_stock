@@ -5,19 +5,20 @@
 		<thead>
 			<tr>
 				<th>Image</th>
-				<th><a href="" hx-get="{% url 'stock:filters' 0 order 'delete_products' %}">Name</a></th>
-				<th><a href="" hx-get="{% url 'stock:filters' 1 order 'delete_products' %}">Brand</a></th>
-				<th><a href="" hx-get="{% url 'stock:filters' 2 order 'delete_products' %}">Price</a></th>
-				<th><a href="" hx-get="{% url 'stock:filters' 3 order 'delete_products' %}">Cost</a></th>
-				<th><a href="" hx-get="{% url 'stock:filters' 4 order 'delete_products' %}">Quantity</a></th>
+				<th><a href="" hx-get="{% url 'stock:products_filter' 0 order 'delete_products' None %}">Name</a></th>
+				<th><a href="" hx-get="{% url 'stock:products_filter' 1 order 'delete_products' None %}">Brand</a></th>
+				<th><a href="" hx-get="{% url 'stock:products_filter' 2 order 'delete_products' None %}">Price</a></th>
+				<th><a href="" hx-get="{% url 'stock:products_filter' 3 order 'delete_products' None %}">Cost</a></th>
+				<th><a href="" hx-get="{% url 'stock:products_filter' 4 order 'delete_products' None %}">Quantity</a></th>
 				<th>Total Price</th>
 				<th>Total Cost</th>
-				<th><a href="" hx-get="{% url 'stock:filters' 5 order 'delete_products' %}">Category</a></th>
+				<th><a href="" hx-get="{% url 'stock:products_filter' 5 order 'delete_products' None %}">Category</a></th>
 				<th></th>
 				<th><button type="submit"><i class="fa-solid fa-trash"></i></button></th>
 			</tr>
 		</thead>
-		<tbody>
+		<div style="overflow: true;">
+			<tbody>
 				{% for product in products %}
 					<tr>
 						<td><img class="img-thumbnail rounded" src="../media/{{product.image.name}}" alt="Image Product" style="height: 100px;"></td>
@@ -33,5 +34,6 @@
 					</tr>
 				{% endfor %}
 		</tbody>
+		</div>
 	</table>
 </form>

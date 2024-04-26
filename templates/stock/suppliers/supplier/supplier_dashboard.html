@@ -16,7 +16,16 @@
 				</div>
 				<br>
 				<br>
-				{% include 'stock/suppliers/supplier/table.html/' %}
+				<div id="sub-main-container">
+					<form action="" hx-post="{% url 'stock:supplier' supplier.id%}" hx-target="body" hx-swap="innerHTML">
+					<div class="container text-center">
+						<a href="" hx-get=""><i class="fa-solid fa-rotate-right"></i></a>
+						<input type="search" class="form-control mx-auto" name="search" style="width: 80%; display: inline;">
+						<button type="submit" class="bg-transparent border-0"><i class="fa-solid fa-check"></i></button>
+					</div>
+				</form>
+					{% include 'stock/suppliers/supplier/table.html/' %}
+				</div>
 			</div>
 			<div class="col-4" id="sec-container">
 				{% include 'stock/suppliers/supplier/utilities/supplier_nav.html' %}

@@ -21,8 +21,7 @@ urlpatterns = [
 			path('modify-all-category-products/', modify_all_category_products, name="modify_all_category_products"),
 			path('modify-some-category-products/', modify_some_category_products, name="modify_some_category_products"),
 			path('increase-price/<category>/', increase_price, name="increase_price"),
-			path('products_filter/<index>/<order>/<page>/', products_filter, name="products_filter"),
-			path('search-products/', search_products, name="search_products"),
+			path('products_filter/<index>/<order>/<page>/<id>', products_filter, name="products_filter"),
 			])),
 	
 	#Categories
@@ -57,10 +56,10 @@ urlpatterns = [
 		include([
 			#Supplier Dashboard
 		    path('',  supplier_dashboard, name="supplier"),
-		    path('create-product/<int:pk>/', create_product_supplier, name="create_product_supplier"),
-			path('add-product-supplier/<int:pk>/', add_products_supplier, name="add_products_supplier"),
-			path('delete-product-supplier/<int:pk_product>/<int:pk_supplier>/', delete_product_supplier, name="delete_product_supplier"),
-			path('delete-products-supplier/<int:pk>/', delete_products_supplier, name="delete_products_supplier"),
+		    path('create-product/', create_product_supplier, name="create_product_supplier"),
+			path('add-product-supplier/', add_products_supplier, name="add_products_supplier"),
+			path('delete-product-supplier/<int:pk_product>/', delete_product_supplier, name="delete_product_supplier"),
+			path('delete-products-supplier/', delete_products_supplier, name="delete_products_supplier"),
 		])),
 	    
     path('entries-dashboard/',

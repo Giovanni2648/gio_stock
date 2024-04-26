@@ -4,6 +4,13 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-8 mt-3" id="main-container">
+				<form action="" hx-post="{% url 'stock:suppliers' %}" hx-target="body" hx-swap="innerHTML">
+					<div class="container text-center">
+						<a href="" hx-get=""><i class="fa-solid fa-rotate-right"></i></a>
+						<input type="search" class="form-control mx-auto" name="search" style="width: 80%; display: inline;">
+						<button type="submit" class="bg-transparent border-0"><i class="fa-solid fa-check"></i></button>
+					</div>
+				</form>
 				{% include 'stock/suppliers/table.html/' %}
 			</div>
 			<div class="col-4" id="sec-container">
